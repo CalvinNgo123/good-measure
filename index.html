@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f2ec">
+  <title>Good Measure — Budget planner</title>
+  <style>
+    :root{--paper:#f4f2ec;--card:#fffefa;--ink:#21271f;--muted:#72776c;--line:#e6e5dc;--green:#2e694b;--green2:#e6f0e8;--orange:#dc754a;--red:#b64f40;--serif:Georgia,"Times New Roman",serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1160px;margin:auto;padding:32px 32px 64px}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:42px}.brand{font-weight:750;font-size:17px;letter-spacing:-.04em;display:flex;align-items:center;gap:10px}.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--green);color:white;display:grid;place-items:center;font-family:var(--serif);font-size:19px}.save-state{color:var(--muted);font-size:12px}.top-actions{display:flex;gap:9px;align-items:center}.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:9px 13px;font-weight:650;font-size:13px}.btn:hover{border-color:#a9b2a5}.btn.primary{background:var(--green);border-color:var(--green);color:white}.btn.primary:hover{background:#24563d}.btn.quiet{background:transparent}.icon-btn{width:32px;height:32px;border:0;border-radius:8px;background:transparent;color:#899085;font-size:19px}.icon-btn:hover{background:#f2eee8;color:var(--red)}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:end;margin-bottom:32px}.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:750}.hero h1{font:500 clamp(42px,6vw,68px)/.98 var(--serif);letter-spacing:-.045em;margin:12px 0 14px;max-width:610px}.hero p{color:var(--muted);max-width:510px;margin:0}.hero-note{border-left:2px solid var(--orange);padding:6px 0 6px 17px;color:#64695f;font-size:13px;max-width:310px;justify-self:end}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(310px,.8fr);gap:18px;align-items:start}.stack{display:grid;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:22px 23px;box-shadow:0 3px 14px #35392108}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:19px}.section-head h2{font:500 23px/1.1 var(--serif);margin:0;letter-spacing:-.02em}.section-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.small-label{display:block;color:#676d62;font-size:11px;font-weight:700;letter-spacing:.035em;margin:0 0 6px}.field{display:flex;flex-direction:column}.field input,.field select,.inline-edit{width:100%;min-width:0;border:1px solid #dedfd5;background:#fff;border-radius:8px;padding:10px 11px;color:var(--ink);outline:none}.field input:focus,.field select:focus{border-color:#70947b;box-shadow:0 0 0 3px #2e694b18}.income-grid{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:12px}.input-wrap{position:relative}.input-wrap .prefix{position:absolute;left:11px;top:10px;color:#84887f}.input-wrap input{padding-left:26px}.row{display:flex;gap:10px;align-items:end}.muted{color:var(--muted)}.hint{font-size:11px;color:var(--muted);margin:10px 0 0}.state-rate{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);margin-top:15px;padding-top:12px;font-size:12px;color:var(--muted)}.state-rate strong{color:var(--ink)}
+    .items{display:grid;gap:0}.item{display:grid;grid-template-columns:minmax(100px,1fr) minmax(78px,.56fr) minmax(90px,.58fr) auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #eeeee8}.item:first-child{border-top:0;padding-top:0}.item-name{font-weight:650}.item-sub{display:block;color:var(--muted);font-size:11px}.item-amount{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}.empty{text-align:center;padding:15px 0;color:#8b8f85;font-size:13px}.add-row{display:grid;grid-template-columns:minmax(90px,1fr) 110px 108px auto;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.add-row input,.add-row select{min-width:0;border:1px solid #dedfd5;background:white;border-radius:8px;padding:9px 10px;font-size:13px}.add-row button{white-space:nowrap}.debt-fields{display:grid;grid-template-columns:minmax(90px,1fr) 110px 110px auto;gap:8px}.card-note{display:flex;align-items:flex-start;gap:9px;background:#f7f6f0;border-radius:9px;padding:11px 12px;color:#72776c;font-size:11px;margin-top:14px}
+    .summary{background:#244d39;color:#fffefa;border-radius:15px;padding:23px;overflow:hidden;position:relative}.summary:after{content:"";position:absolute;width:220px;height:220px;border:1px solid #ffffff14;border-radius:50%;right:-110px;top:-120px;box-shadow:0 0 0 26px #ffffff08,0 0 0 53px #ffffff05}.summary .eyebrow{color:#b7d4bf}.summary h2{font:500 24px var(--serif);margin:8px 0 18px}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px 10px;position:relative;z-index:1}.metric-label{font-size:11px;color:#d2e0d4;display:block}.metric-value{display:block;font:500 24px/1.1 var(--serif);margin-top:4px;font-variant-numeric:tabular-nums}.metric-value.large{font-size:35px;color:#e7c879}.summary-divider{height:1px;background:#ffffff2d;margin:19px 0 14px}.tax-line{display:flex;justify-content:space-between;color:#d2e0d4;font-size:12px;margin:6px 0}.tax-line strong{color:white;font-variant-numeric:tabular-nums}.retained-title{color:#d2e0d4;font-size:11px}.retained{font:500 38px/1.1 var(--serif);color:#e7c879;margin:5px 0 1px;font-variant-numeric:tabular-nums}.retained.negative{color:#ffb2a2}.summary-foot{font-size:10px;color:#b8c9bc;margin-top:12px;max-width:330px}
+    .afford{border:1px solid #d9e5d9;background:#f5f8f2}.afford .section-head{margin-bottom:15px}.purchase-row{display:grid;grid-template-columns:1fr 110px;gap:9px}.purchase-row input{min-width:0;border:1px solid #dbe0d5;background:white;border-radius:8px;padding:10px}.purchase-result{margin-top:13px;padding:12px;border-radius:9px;background:white;font-size:13px;color:#60685e;min-height:44px}.purchase-result.good{color:var(--green);background:#e7f2e9}.purchase-result.bad{color:#a24637;background:#f9e9e4}.buy-row{display:flex;gap:10px;align-items:center}.buy-row select{min-width:0;flex:1;border:1px solid #dbe0d5;background:white;border-radius:8px;padding:10px;font-size:13px}.source{font-size:10px;color:#83877d;padding:0 5px}.source a{color:inherit;text-decoration:underline;text-underline-offset:2px}.foot{display:flex;justify-content:space-between;gap:18px;margin-top:22px;color:#8b8f85;font-size:10px}.saved-list{display:none;position:absolute;top:68px;right:32px;width:min(320px,calc(100vw - 40px));background:var(--card);border:1px solid var(--line);box-shadow:0 10px 30px #0002;padding:14px;border-radius:12px;z-index:5}.saved-list.show{display:block}.saved-title{display:flex;justify-content:space-between;font-weight:700;margin-bottom:9px}.saved-entry{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:10px 0;font-size:13px}.saved-entry button{border:0;background:none;color:var(--green);font-weight:700}.file-input{display:none}
+    @media(max-width:800px){.shell{padding:22px 18px 42px}.hero{grid-template-columns:1fr;gap:20px}.hero-note{justify-self:start}.grid{grid-template-columns:1fr}.topbar{margin-bottom:32px}.saved-list{right:18px}.summary{order:-1}}
+    @media(max-width:520px){.shell{padding:18px 13px 32px}.topbar{align-items:flex-start;gap:10px}.top-actions{flex-wrap:wrap;justify-content:flex-end}.btn{padding:8px 10px;font-size:12px}.save-state{display:none}.hero h1{font-size:48px}.card,.summary{padding:18px}.income-grid{grid-template-columns:1fr 1fr}.income-grid .field:first-child{grid-column:1/-1}.add-row{grid-template-columns:1fr 1fr}.add-row input:first-child{grid-column:1/-1}.debt-fields{grid-template-columns:1fr 1fr}.debt-fields input:first-child{grid-column:1/-1}.item{grid-template-columns:minmax(90px,1fr) 75px 80px auto;gap:6px}.item-sub{font-size:10px}.item-amount{font-size:13px}.summary-grid{gap:14px}.metric-value{font-size:21px}.metric-value.large{font-size:31px}.foot{flex-direction:column;gap:5px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">g</span> good measure <span class="save-state" id="saveStatus">Saved in this browser</span></div>
+      <div class="top-actions">
+        <button class="btn quiet" id="savedBudgetsBtn" type="button">Saved budgets</button>
+        <button class="btn" id="exportBtn" type="button">Export</button>
+        <button class="btn" id="importBtn" type="button">Import</button>
+        <button class="btn primary" id="saveBtn" type="button">Save budget</button>
+        <input class="file-input" type="file" id="importFile" accept="application/json,.json">
+      </div>
+    </header>
+    <div class="saved-list" id="savedList"></div>
+    <section class="hero">
+      <div><div class="eyebrow">A clearer view of your money</div><h1>Make room for<br>what matters.</h1><p>Plan your month, see an estimated take-home amount, and check whether a purchase fits the budget you’ve built.</p></div>
+      <div class="hero-note">Your budget stays on this device. Tax amounts are planning estimates, not a tax return or paycheck calculation.</div>
+    </section>
+    <div class="grid">
+      <div class="stack">
+        <section class="card">
+          <div class="section-head"><div><h2>Income &amp; tax estimate</h2><p>Start with annual household gross income.</p></div><span class="eyebrow">01 / 03</span></div>
+          <div class="income-grid">
+            <label class="field"><span class="small-label">Annual gross income</span><span class="input-wrap"><span class="prefix">$</span><input id="income" type="number" min="0" step="100" value="72000" inputmode="decimal"></span></label>
+            <label class="field"><span class="small-label">Filing status</span><select id="filing"><option value="single">Single</option><option value="marriedJoint">Married filing jointly</option><option value="marriedSeparate">Married filing separately</option><option value="head">Head of household</option></select></label>
+            <label class="field"><span class="small-label">State</span><select id="state"></select></label>
+          </div>
+          <div class="state-rate"><span>Estimated state income tax rate</span><strong id="stateRate">—</strong></div>
+          <p class="hint">Federal estimate uses 2026 brackets and standard deduction. State estimate uses a simplified effective rate for your state. Payroll taxes, credits, local taxes and itemized deductions aren’t included.</p>
+        </section>
+        <section class="card">
+          <div class="section-head"><div><h2>Monthly expenses</h2><p>Add what you expect to spend in a typical month.</p></div><span class="eyebrow">02 / 03</span></div>
+          <div class="items" id="expenseList"></div>
+          <form class="add-row" id="expenseForm">
+            <input name="name" aria-label="Expense name" placeholder="Expense name" required maxlength="40">
+            <input name="amount" aria-label="Amount" type="number" min="0.01" step="0.01" placeholder="$ amount" required>
+            <select name="frequency" aria-label="Frequency"><option value="monthly">Monthly</option><option value="weekly">Weekly</option><option value="biweekly">Every 2 weeks</option><option value="annual">Annual</option></select>
+            <button class="btn" type="submit">+ Add</button>
+          </form>
+        </section>
+        <section class="card">
+          <div class="section-head"><div><h2>Debt payments</h2><p>Include monthly payments. Balance is optional.</p></div><span class="eyebrow">03 / 03</span></div>
+          <div class="items" id="debtList"></div>
+          <form class="add-row debt-fields" id="debtForm">
+            <input name="name" aria-label="Debt name" placeholder="Debt name" required maxlength="40">
+            <input name="payment" aria-label="Monthly payment" type="number" min="0.01" step="0.01" placeholder="Monthly $" required>
+            <input name="balance" aria-label="Remaining balance optional" type="number" min="0" step="0.01" placeholder="Balance (opt.)">
+            <button class="btn" type="submit">+ Add</button>
+          </form>
+          <div class="card-note"><span>↗</span><span>Debt balances are shown for tracking. Only monthly payments count toward spending and affordability.</span></div>
+        </section>
+      </div>
+      <aside class="stack">
+        <section class="summary" aria-live="polite">
+          <div class="eyebrow">Your monthly picture</div><h2>What stays in your hands</h2>
+          <div class="summary-grid">
+            <div><span class="metric-label">Monthly take-home est.</span><strong class="metric-value" id="takeHome">$0</strong></div>
+            <div><span class="metric-label">Total spent / payments</span><strong class="metric-value" id="totalSpent">$0</strong></div>
+          </div>
+          <div class="summary-divider"></div>
+          <span class="retained-title">MONTHLY RETAINED</span><div class="retained" id="retained">$0</div>
+          <div class="tax-line"><span>Federal tax estimate</span><strong id="fedTax">$0 / yr</strong></div>
+          <div class="tax-line"><span>State tax estimate</span><strong id="stateTax">$0 / yr</strong></div>
+          <div class="tax-line"><span>Monthly expenses</span><strong id="expenseTotal">$0</strong></div>
+          <div class="tax-line"><span>Monthly debt payments</span><strong id="debtTotal">$0</strong></div>
+          <div class="summary-foot">Take-home estimate divides annual income after estimated income taxes by 12. Real pay may differ.</div>
+        </section>
+        <section class="card afford">
+          <div class="section-head"><div><h2>Can I afford it?</h2><p>Check a purchase against your monthly retained amount.</p></div></div>
+          <div class="buy-row"><span class="input-wrap" style="flex:1"><span class="prefix">$</span><input id="purchaseAmount" type="number" min="0" step="0.01" placeholder="Purchase amount" aria-label="Purchase amount" style="width:100%;border:1px solid #dbe0d5;background:white;border-radius:8px;padding:10px 10px 10px 26px"></span><select id="purchaseType" aria-label="Purchase type"><option value="once">One-time</option><option value="monthly">Monthly</option></select></div>
+          <div class="purchase-result" id="purchaseResult">Add a purchase amount to see how it fits.</div>
+        </section>
+        <section class="card">
+          <div class="section-head"><div><h2>Your plan, your device</h2><p>Keep a version for later or move it to another browser.</p></div></div>
+          <p class="muted" style="font-size:13px;margin:0 0 13px">Changes save automatically in this browser. Use <b>Save budget</b> to name a snapshot. Export a JSON copy for backup.</p>
+          <button class="btn" id="clearBtn" type="button">Start a fresh budget</button>
+        </section>
+      </aside>
+    </div>
+    <footer class="foot"><span>Good Measure · Budget planner</span><span>Tax estimates simplified for planning. Verify with official sources before making tax decisions.</span><span class="source">Rates: <a href="https://www.irs.gov/irb/2025-45_IRB" target="_blank" rel="noreferrer">IRS 2026 federal figures</a> · <a href="https://taxfoundation.org/data/all/state/state-income-tax-rates-2026/" target="_blank" rel="noreferrer">Tax Foundation state rates</a></span></footer>
+  </main>
+  <script>
+  (()=>{
+    const STORAGE='goodMeasureBudgetV1', SAVED='goodMeasureSavedV1';
+    const states=[['Alabama',.027],['Alaska',0],['Arizona',.025],['Arkansas',.025],['California',.055],['Colorado',.044],['Connecticut',.04],['Delaware',.035],['Florida',0],['Georgia',.035],['Hawaii',.05],['Idaho',.04],['Illinois',.0495],['Indiana',.0295],['Iowa',.03],['Kansas',.04],['Kentucky',.035],['Louisiana',.025],['Maine',.045],['Maryland',.04],['Massachusetts',.05],['Michigan',.0425],['Minnesota',.05],['Mississippi',.03],['Missouri',.03],['Montana',.04],['Nebraska',.035],['Nevada',0],['New Hampshire',0],['New Jersey',.045],['New Mexico',.035],['New York',.05],['North Carolina',.0399],['North Dakota',.02],['Ohio',.025],['Oklahoma',.03],['Oregon',.055],['Pennsylvania',.0307],['Rhode Island',.04],['South Carolina',.035],['South Dakota',0],['Tennessee',0],['Texas',0],['Utah',.0445],['Vermont',.045],['Virginia',.04],['Washington',0],['West Virginia',.035],['Wisconsin',.045],['Wyoming',0],['District of Columbia',.045]];
+    const seed={income:72000,filing:'single',state:'New York',expenses:[{name:'Housing',amount:1850,frequency:'monthly'},{name:'Groceries',amount:520,frequency:'monthly'},{name:'Utilities',amount:175,frequency:'monthly'},{name:'Transportation',amount:260,frequency:'monthly'},{name:'Subscriptions',amount:55,frequency:'monthly'}],debts:[{name:'Student loan',payment:240,balance:12400},{name:'Credit card',payment:125,balance:2800}]};
+    let data=loadCurrent(); const $=id=>document.getElementById(id); const cash=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(n)||0); const cents=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(Number(n)||0);
+    const freqLabel={monthly:'monthly',weekly:'weekly · converted to monthly',biweekly:'every 2 weeks · converted to monthly',annual:'annual · converted to monthly'};
+    const monthAmount=(amount,frequency)=>amount*({monthly:1,weekly:52/12,biweekly:26/12,annual:1/12}[frequency]||1);
+    function loadCurrent(){try{return JSON.parse(localStorage.getItem(STORAGE))||structuredClone(seed)}catch{return structuredClone(seed)}}
+    function saveCurrent(){localStorage.setItem(STORAGE,JSON.stringify(data));$('saveStatus').textContent='Saved in this browser';}
+    function init(){ $('state').innerHTML=states.map(([n])=>`<option>${n}</option>`).join(''); render(); }
+    function federalTax(income,status){
+      const deduction={single:16100,marriedJoint:32200,marriedSeparate:16100,head:24150}[status]||16100;
+      const tables={single:[[12400,.10],[50400,.12],[105700,.22],[201775,.24],[256225,.32],[640600,.35],[Infinity,.37]],marriedJoint:[[24800,.10],[100800,.12],[211400,.22],[403550,.24],[512450,.32],[768700,.35],[Infinity,.37]],marriedSeparate:[[12400,.10],[50400,.12],[105700,.22],[201775,.24],[256225,.32],[384350,.35],[Infinity,.37]],head:[[17700,.10],[67450,.12],[105700,.22],[201750,.24],[256200,.32],[640600,.35],[Infinity,.37]]};
+      let taxable=Math.max(0,income-deduction),prev=0,tax=0; for(const [cap,rate] of tables[status]){let part=Math.max(0,Math.min(taxable,cap)-prev);tax+=part*rate;if(taxable<=cap)break;prev=cap;}return tax;
+    }
+    function calc(){let income=Math.max(0,Number(data.income)||0),fed=federalTax(income,data.filing),rate=states.find(x=>x[0]===data.state)?.[1]??0,stateTax=Math.max(0,income-({single:16100,marriedJoint:32200,marriedSeparate:16100,head:24150}[data.filing]||16100))*rate;let expenses=data.expenses.reduce((s,e)=>s+monthAmount(Number(e.amount)||0,e.frequency),0),debt=data.debts.reduce((s,d)=>s+(Number(d.payment)||0),0),takeHome=(income-fed-stateTax)/12,spent=expenses+debt,retained=takeHome-spent;return{income,fed,stateTax,rate,expenses,debt,takeHome,spent,retained};}
+    function renderItems(){const list=$('expenseList'); list.innerHTML=data.expenses.length?data.expenses.map((e,i)=>`<div class="item"><div><span class="item-name">${esc(e.name)}</span><span class="item-sub">${freqLabel[e.frequency]||'monthly'}</span></div><span class="muted">${cash(monthAmount(e.amount,e.frequency))}/mo</span><span class="item-amount">${cents(e.amount)}</span><button class="icon-btn" data-remove="expense" data-index="${i}" aria-label="Remove ${esc(e.name)}">×</button></div>`).join(''):'<div class="empty">No expenses yet. Add one below.</div>';
+      const debts=$('debtList');debts.innerHTML=data.debts.length?data.debts.map((d,i)=>`<div class="item"><div><span class="item-name">${esc(d.name)}</span><span class="item-sub">${d.balance?`balance ${cash(d.balance)}`:'debt payment'}</span></div><span class="muted">monthly</span><span class="item-amount">${cents(d.payment)}</span><button class="icon-btn" data-remove="debt" data-index="${i}" aria-label="Remove ${esc(d.name)}">×</button></div>`).join(''):'<div class="empty">No debt payments yet. Add one below.</div>';
+      document.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{data[b.dataset.remove==='expense'?'expenses':'debts'].splice(Number(b.dataset.index),1);update()}));
+    }
+    function render(){ $('income').value=data.income;$('filing').value=data.filing;$('state').value=data.state;renderItems();const c=calc();$('takeHome').textContent=cash(c.takeHome);$('totalSpent').textContent=cash(c.spent);$('retained').textContent=cash(c.retained);$('retained').classList.toggle('negative',c.retained<0);$('fedTax').textContent=`${cash(c.fed)} / yr`;$('stateTax').textContent=`${cash(c.stateTax)} / yr`;$('expenseTotal').textContent=cash(c.expenses);$('debtTotal').textContent=cash(c.debt);$('stateRate').textContent=`~${(c.rate*100).toFixed(c.rate%1?2:0)}% effective (rough)`;purchaseCheck();}
+    function update(){saveCurrent();render();}
+    function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    $('income').addEventListener('input',()=>{data.income=Number($('income').value)||0;update()});$('filing').addEventListener('change',()=>{data.filing=$('filing').value;update()});$('state').addEventListener('change',()=>{data.state=$('state').value;update()});
+    $('expenseForm').addEventListener('submit',e=>{e.preventDefault();let f=new FormData(e.currentTarget);data.expenses.push({name:f.get('name').trim(),amount:Number(f.get('amount')),frequency:f.get('frequency')});e.currentTarget.reset();update()});
+    $('debtForm').addEventListener('submit',e=>{e.preventDefault();let f=new FormData(e.currentTarget);data.debts.push({name:f.get('name').trim(),payment:Number(f.get('payment')),balance:Number(f.get('balance'))||0});e.currentTarget.reset();update()});
+    function purchaseCheck(){let amount=Number($('purchaseAmount').value),type=$('purchaseType').value,result=$('purchaseResult'),surplus=calc().retained;result.className='purchase-result';if(!amount||amount<0){result.textContent='Add a purchase amount to see how it fits.';return;}if(type==='monthly'){if(surplus>=amount){result.classList.add('good');result.innerHTML=`Looks within this budget. After adding <b>${cents(amount)}/mo</b>, you’d retain about <b>${cash(surplus-amount)}/mo</b>.`;}else{result.classList.add('bad');result.innerHTML=`This would exceed your monthly retained amount by about <b>${cash(amount-surplus)}/mo</b>.`}}else if(surplus>=amount){result.classList.add('good');result.innerHTML=`It fits within one month’s retained amount, with about <b>${cash(surplus-amount)}</b> left this month.`;}else if(surplus>0){result.classList.add('bad');result.innerHTML=`It’s about <b>${cash(amount-surplus)}</b> above one month’s retained amount. At this surplus, it would take about <b>${Math.ceil(amount/surplus)} months</b> to set aside.`;}else{result.classList.add('bad');result.textContent='Your current plan has no monthly surplus to put toward this purchase.';}}
+    $('purchaseAmount').addEventListener('input',purchaseCheck);$('purchaseType').addEventListener('change',purchaseCheck);
+    $('saveBtn').addEventListener('click',()=>{let all=JSON.parse(localStorage.getItem(SAVED)||'[]'),name=prompt('Name this budget snapshot:','My budget');if(!name)return;all.push({name:name.trim(),savedAt:new Date().toISOString(),data:structuredClone(data)});localStorage.setItem(SAVED,JSON.stringify(all));$('saveStatus').textContent='Snapshot saved';});
+    $('savedBudgetsBtn').addEventListener('click',()=>{let box=$('savedList');let all=JSON.parse(localStorage.getItem(SAVED)||'[]');box.classList.toggle('show');box.innerHTML=`<div class="saved-title"><span>Saved budgets</span><button class="icon-btn" id="closeSaved" aria-label="Close">×</button></div>`+(all.length?all.map((x,i)=>`<div class="saved-entry"><span>${esc(x.name)}<span class="item-sub">${new Date(x.savedAt).toLocaleDateString()}</span></span><span><button data-load="${i}">Load</button> <button data-delete="${i}" style="color:#a24637">Delete</button></span></div>`).join(''):'<div class="empty">No snapshots saved yet.</div>');$('closeSaved').addEventListener('click',()=>box.classList.remove('show'));box.querySelectorAll('[data-load]').forEach(b=>b.addEventListener('click',()=>{data=all[Number(b.dataset.load)].data;update();box.classList.remove('show')}));box.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>{all.splice(Number(b.dataset.delete),1);localStorage.setItem(SAVED,JSON.stringify(all));$('savedBudgetsBtn').click();$('savedBudgetsBtn').click()}));});
+    $('exportBtn').addEventListener('click',()=>{let blob=new Blob([JSON.stringify({app:'Good Measure',version:1,data},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='good-measure-budget.json';a.click();URL.revokeObjectURL(a.href)});
+    $('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async e=>{try{let f=e.target.files[0];if(!f)return;let j=JSON.parse(await f.text()),incoming=j.data||j;if(!Array.isArray(incoming.expenses)||!Array.isArray(incoming.debts))throw Error();data={...structuredClone(seed),...incoming};update();}catch{alert('That file does not look like a Good Measure budget.')}e.target.value=''});
+    $('clearBtn').addEventListener('click',()=>{if(confirm('Start fresh with an empty budget? This replaces the current budget on this device.')){data={income:0,filing:'single',state:data.state,expenses:[],debts:[]};update();}});
+    init();
+  })();
+  </script>
+</body>
+</html>
